@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zoo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="zoo.js"></script>
+</head>
+
+<body>
+
+<h1> Welcome to your zoo.</h1>
+<div>
+    <select id="animalSelector">
+        <option value="0"> Choose your animal</option>
+        <option value="1">Tiger</option>
+        <option value = "2">Bear</option>
+        <option value = "3">Giraffe</option>
+        <option value = "4">Unicorn</option>
+        <option value = "5">Bee</option>
+    </select>
+</div>
+
+<div>
+    <input type="text" id="naming" placeholder="Name your animal here"/>
+
+</div>
+
+
+<button id="createAnimal"> Create Animal</button>
+
+<div>
+    <select id="animalMeals" >
+        <option value="0"> Meat</option>
+        <option value="1"> Fish</option>
+        <option value="2"> Leaves</option>
+        <option value="3"> Marshmallows</option>
+        <option value="4"> Pollen</option>
+
+    </select>
+<button id="food"> Feed Me</button>
+
+</div>
+
+<div>
+    <text>Click on an animal to remove it. </text>
+
+
+</div>
+
+
+<div id="animalCage">Your animals:</div>
+
+<div id="feedDiv"></div>
+
+
+
+</body>
+</html>
