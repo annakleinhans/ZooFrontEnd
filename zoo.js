@@ -1,12 +1,12 @@
 var animalPopulation = 0;
-id = 1;
+
 
 $(document).ready(function(){
     var tigger = new Tiger("Tigger");
     var pooh = new Bear("Pooh");
     var gemma = new Giraffe("Gemma");
     var rarity = new Unicorn("Rarity");
-    var stinger = new Bees("Stinger");
+    var stinger = new Bee("Stinger");
     allAnimals = [ tigger, pooh, gemma, rarity, stinger];
 
     $("#createAnimal").click(function(){
@@ -18,6 +18,10 @@ $(document).ready(function(){
     });
 
     listAnimals();
+    $("#animalCage").click(function(){
+        deleteAnimal(this);
+    });
+
 
 });
 
@@ -45,25 +49,23 @@ function createAnimal(){
                 animal = new Bee (animalName);
                 break;
         }
-
-    console.log(animal);
-    $("#animalCage").html(animal.name);
+    $("#theFeed").append("You created " + animal.name + " the " + animal.constructor.name + "." + "<br>");
     allAnimals.push(animal);
     listAnimals();
+
+
+
 }
 
 
 function feedAnimals(){
-    $("#animalMeals").empty();
+   $("#theFeed").empty();
     var animalFood = $("#animalMeals option:selected").text();
     for(var i= 0; i < allAnimals.length; i++){
-        allAnimals[i].eat(animalFood);
+        $("theFeed").html(allAnimals[i].eat(animalFood));
     }
-    console.log(animalFood);
-   }
+}
 
-
-// this should go into the animal cage div
 function listAnimals(){
     for(var i = 0; i< allAnimals.length; i++){
         console.log(allAnimals);
@@ -71,54 +73,24 @@ function listAnimals(){
     }
     $("#animalCage").empty();
     for(var i = 0; i < allAnimals.length; i++){
-      //  $("#animalCage").append(allAnimals[i].id);
-        $("#animalCage").append(allAnimals[i].name + " the " + allAnimals[i].constructor.name + "." + "<br>");
-        $("#animalCage").append(allAnimals[i].name + "'s favorite food is " + allAnimals[i].favoriteFood + "." + "<br><br>");
+       //allAnimals[i].id
+       $("#animalCage").append("<br><div onclick='deleteAnimal(this.id)' id=" + allAnimals[i].name + ">"   + allAnimals[i].name + " the " + allAnimals[i].constructor.name + "." + "<br>");
+       $("#animalCage").append(allAnimals[i].name + "'s favorite food is " + allAnimals[i].favoriteFood + "." + "<br></div>");
 
     }
 }
 
-
-
-// function deleteAnimal(id){
-//      $("#removeMe").click(function(){
-//          for (var i = 0; i < allAnimals.length; i++){
-//              if ()
-//          }
-//     })
-//
-//     //listAnimals();
-// }
-
-// <a href="#" onclick="deleteAnimal(allAnimals[i].id)">XXXXX</a>
-
-
-
-//a function which receives an animal name/id from an onclick
-// handler and removes that object from the allAnimals array.
-// Use array.splice(indexToRemove, itemsToRemove) to remove the animal.
-// Call listAnimals() when done.
-
-
-
-class Zookeeper {
-
-    constructor(name) {
-        this.name = name;
-    }
-    feedAnimals(animals, food){
-        console.log(this.name + " is feeding " + food + " to " + animals.length + " animals of " + animalPopulation + " total animals.");
-        for (var i =0; i < animals.length; i++){
-            animals[i].eat(food);
+function deleteAnimal(name){
+    console.log(name);
+    for(var i=0; i<allAnimals.length; i++){
+        if (name == allAnimals[i].name){
+            $("#theFeed").append("You deleted " + allAnimals[i].name + " the " + allAnimals[i].constructor.name + "." + "<br>");
+            allAnimals.splice(i, 1);
         }
-        /* not really sure if you meant you wanted the animal population
-            displayed in the console alone or if you wanted it in the sentence above.
-            If you want it to appear alone then all you have to do is
-            uncomment the command below (it works).
-         */
-
-        //console.log(animalPopulation);
     }
+    listAnimals();
+
+
 }
 
 class Animal {
@@ -127,21 +99,16 @@ class Animal {
         this.name = name;
         this.favoriteFood = favoriteFood;
         animalPopulation++;
-        this.id = id++;
     }
 
-    // static getPopulation(){
-    //     return animalPopulation;
-    // }
 
     sleep(){
-        console.log(this.name + " sleeps for 8 hours");
+        $("#theFeed").append(this.name + " sleeps for 8 hours" + "<br>");
     }
 
     eat(food) {
-        // complete your eat function here!
-        console.log(this.name + " eats " + food);
-        food == this.favoriteFood ? console.log("YUM!!! " + this.name + " wants more " + food) : this.sleep();
+        $("#theFeed").append(this.name + " eats " + food + "<br>");
+        food == this.favoriteFood ? $("#theFeed").append("YUM!!! " + this.name + " wants more " + food + "<br>") : this.sleep();
     }
 }
 
@@ -160,12 +127,12 @@ class Unicorn extends Animal{
     }
 
     sleep() {
-        console.log(this.name + " sleeps in a cloud");
+        $("#theFeed").append(this.name + " sleeps in a cloud" + "<br>");
     }
     eat(food) {
-        console.log(this.name + " eats " + food);
+        $("#theFeed").append(this.name + " eats " + food + "<br>");
         if (this.favoriteFood == food){
-            console.log("YUM!!! " + this.name + " wants more " + food);
+            $("#theFeed").append("YUM!!! " + this.name + " wants more " + food + "<br>");
             this.sleep();
         } else {
             this.sleep();
@@ -180,32 +147,32 @@ class Giraffe extends Animal {
 
     eat(food){
         if (this.favoriteFood == food){
-            console.log("YUM!!! " + this.name + " wants more leaves");
+            $("#theFeed").append("YUM!!! " + this.name + " wants more leaves" + "<br>");
             this.sleep();
         } else {
-            console.log("YUCK!!! " + this.name + " will not eat " + food);
-            console.log(this.name + " eats leaves");
+            $("#theFeed").append("YUCK!!! " + this.name + " will not eat " + food + "<br>");
+            $("#theFeed").append(this.name + " eats leaves" + "<br>");
         }
     }
 }
 
-class Bees extends Animal {
+class Bee extends Animal {
     constructor (name){
         super (name, "pollen");
     }
 
     sleep(){
-        console.log(this.name + " never sleeps");
+        $("#theFeed").append(this.name + " never sleeps" + "<br>");
 
     }
     eat(food){
         if (food == this.favoriteFood){
-            console.log("YUM!!! " + this.name + " wants more pollen");
+            $("#theFeed").append("YUM!!! " + this.name + " wants more pollen" + "<br>");
             this.sleep();
 
         } else {
-            console.log("YUCK!!! " + this.name + " will not eat " + food);
-            console.log(this.name + " eats pollen");
+            $("#theFeed").append("YUCK!!! " + this.name + " will not eat " + food + "<br>");
+            $("#theFeed").append(this.name + " eats pollen" + "<br>");
         }
     }
 }
@@ -218,49 +185,14 @@ class Bear extends Animal {
     }
 
     sleep() {
-        console.log(this.name + " hibernates for 4 months");
+        $("#theFeed").append(this.name + " hibernates for 4 months" + "<br>");
     }
 
     eat(food) {
         // complete your eat function here!
-        console.log(this.name + " eats " + food);
-        this.favoriteFood == food ? console.log("YUM!!! " + this.name + " wants more " + food) :
+        $("#theFeed").append(this.name + " eats " + food + "<br>");
+        this.favoriteFood == food ? $("#theFeed").append("YUM!!! " + this.name + " wants more " + food + "<br>") :
             this.sleep();
 
     }
 }
-
-// eat("Tigger", "meat");
-// eat("Tigger", "bacon");
-//
-// var p1 = new Polygon(20, 40);
-// var p2 = new Polygon(100, 200);
-// p1.sayName();
-// p2.sayHistory();
-// class Polygon {
-//
-//     constructor(height, width) {
-//         this.name = 'Polygon';
-//         this.height = height;
-//         this.width = width;
-//     }
-//
-//     //method #1
-//     sayName() {
-//         console.log('Hi, I am a ', this.name + '.');
-//     }
-//
-//     //method #2
-//     sayHistory() {
-//         console.log('"Polygon" is derived from the Greek polus (many) ' +
-//             'and gonia (angle).');
-//     }
-//
-// }
-
-
-// function eat(name, food){
-//     console.log(name + " eats " + food);
-//  /*   if (favoriteFood == food){
-//         console.log("YUM!!!" + name + " wants more " + food);
-//     } else {
